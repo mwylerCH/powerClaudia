@@ -1,4 +1,4 @@
-# InfSplitter.ps1
+# PI.ps1
 
 
 # Splits up influenza fasta with a single file for each segment
@@ -46,7 +46,7 @@ ForEach ($Line in $Original) {
 
 ### Split up -----------------------------
 
-$FastaHeads = $Fasta.Keys
+[System.Collections.ArrayList]$FastaHeads = $Fasta.Keys
 
 for (($NR = 1); $NR -lt 9; $NR++) {
 	# open file for each segment
@@ -65,6 +65,15 @@ for (($NR = 1); $NR -lt 9; $NR++) {
 		if (($head -match ".*_${NR}_.*") -or ($head -match ".*\|$NR\|.*")){
 			Out-File -Append -FilePath $OUTfile -InputObject $head
 			Out-File -Append -FilePath $OUTfile -InputObject $Fasta[$head]
+			# and remove them from list of keys (to check if all where found)
+			$FastaHeads.Remove("$head")
 		}
 	}
+}
+
+### look for problematic headers ----------------------------
+
+ForEach ($head in $FastaHeads) {
+"WARNING: No Number indication for $head"
+'Try to use `|1|` or `_1_`'
 }
