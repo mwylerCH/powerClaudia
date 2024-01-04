@@ -2,7 +2,7 @@
 
 
 # Splits up influenza fasta with a single file for each segment
-# Michele Wyler, IVI Mittelhäusern, 20.12.2023
+# Michele Wyler, IVI Mittelhäusern, 4.1.2024
 
 
 ## Ask input file through file explorer
