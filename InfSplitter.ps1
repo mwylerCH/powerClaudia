@@ -5,17 +5,22 @@
 # Michele Wyler, IVI Mittelhäusern, 20.12.2023
 
 
-# read in file as argument
-Param(
-  [parameter(mandatory=$true)][string]$PATH
-)
+## Ask input file through file explorer
+# load library
+Add-Type -AssemblyName System.Windows.Forms
+
+# initiate windows
+$FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{ InitialDirectory = [Environment]::GetFolderPath('Windows') }
+
+
+# display
+$null = $FileBrowser.ShowDialog()
 
 
 # read in file
-$Original = Get-Content -Path $PATH
-
-
-
+#cat $FileBrowser.FileName  
+$Original = Get-Content -Path $FileBrowser.FileName  
+$PATH = $FileBrowser.FileName
 
 #### Read the file line by line ------------------------
 
@@ -43,6 +48,7 @@ ForEach ($Line in $Original) {
 			}
 	}
 }
+
 
 ### Split up -----------------------------
 
@@ -74,6 +80,7 @@ for (($NR = 1); $NR -lt 9; $NR++) {
 ### look for problematic headers ----------------------------
 
 ForEach ($head in $FastaHeads) {
-"WARNING: No Number indication for $head"
-'Try to use `|1|` or `_1_`'
+Write-Error "WARNING"
+'ERROR: No Number indication for $head: Try to use `|1|` or `_1_`'
+Pause
 }
